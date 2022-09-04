@@ -1,1 +1,1 @@
-# Capstobe-Team-2
+# Capstone-Team-2
