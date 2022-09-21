@@ -8,5 +8,50 @@
  </head>
  <body>
     <h1>Capstone Signup Page!</h1>
+
+    <!--Form for signing up-->
+    <form>
+        <h2>Sign up</h2>
+        <!--Label information for entering email and possible error-->
+        <label for="email">Email</label>
+        <input type="text" name="email" required />
+        <div class="email error"></div>
+        <!--Label information for entering password and possible error-->
+        <label for="password">Password</label>
+        <input type="password" name="password" required />
+        <div class="password error"></div>
+        <button>Sign up</button>
+    </form>
  </body>
+
+ <!--JavaScript for handeling the sign up process-->
+ <script>
+    const form = document.querySelector('form');
+
+    //Listen for when the submit button is pressed then fire function to take in event object
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); //Prevents refresh from happening
+    
+        //Get the email and password from name field
+        const email = form.email.value;
+        const password = form.password.value;
+        //Log onto the developer tools console this information
+        //console.log(email, password);
+
+        try {
+            const res = await fetch('/signup', {
+                method: 'POST', //Type of request
+
+                //What you're passing
+                body: JSON.stringify({ email: email, password: password }),
+            
+                //So it knows json is the type of data being added to the server
+                headers: { 'Content-Type': 'application/json' }
+            })
+        }
+        catch (err) {
+            console.log(err)
+        }
+    })
+ </script>
 </html>

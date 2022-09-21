@@ -1,6 +1,9 @@
 //Import the user model
 const User = require('../models/User')
 
+//Require json web tokens for handeling the user when logged in
+const jwt = require('jsonwebtoken')
+
 //Function to handle errors
 const handleErrors = (err) => {
     //The err.message will be the custom error messages we made in the User schema!

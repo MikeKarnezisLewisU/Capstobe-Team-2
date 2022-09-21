@@ -9,9 +9,13 @@ const port = process.env.PORT || 8080;
 //Import our routes from the routes folder authRoutes
 const authRoutes = require('./routes/authRoutes');
 
+//Import cookie parser package to work with cookies
+const cookieParser = require('cookie-parser')
+
 //middleware
 app.use(express.static('public'));
 app.use(express.json()); //Parces JSON into a javascript object to be used inside the code attaching it to the request in the authRoutes file
+app.use(cookieParser()); //Now you can access cookie methods on responses
 
 //Set view for ejs
 app.set('view engine', 'ejs')
