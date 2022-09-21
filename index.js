@@ -11,6 +11,7 @@ const authRoutes = require('./routes/authRoutes');
 
 //middleware
 app.use(express.static('public'));
+app.use(express.json()); //Parces JSON into a javascript object to be used inside the code attaching it to the request in the authRoutes file
 
 //Set view for ejs
 app.set('view engine', 'ejs')
