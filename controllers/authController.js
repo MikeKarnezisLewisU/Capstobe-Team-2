@@ -34,6 +34,16 @@ const handleErrors = (err) => {
         })
     }
 
+    //Incorrect email at login
+    if (err.message === 'incorrect email') {
+        errors.email = 'that email is not registered'
+    }
+
+    //Incorrect password at login
+    if (err.message === 'incorrect password') {
+        errors.password = 'incorrect password'
+    }
+
     return errors; //Send the errors object back
 } 
 
@@ -93,9 +103,16 @@ module.exports.login_post = async (req, res) => {
     try {
         //Call the login static function and it should return as errors or the user itself
         const user = await User.login(email, password)
+        //Create token to send to browser
+        const token = createToken(user._id)
+        //Place inside a cookie and send in res
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+    
         res.status(200).json({ user: user._id })
+
     }
     catch (err) {
-        res.status(400).json({})
+        const errors = handleErrors(err)
+        res.status(400).json({ errors })
     }
 }

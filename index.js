@@ -12,6 +12,8 @@ const authRoutes = require('./routes/authRoutes');
 //Import cookie parser package to work with cookies
 const cookieParser = require('cookie-parser')
 
+//Import function to require authentication to go to certain pages
+const { requireAuth } = require('./middleware/authMiddleware')
 //middleware
 app.use(express.static('public'));
 app.use(express.json()); //Parces JSON into a javascript object to be used inside the code attaching it to the request in the authRoutes file
@@ -34,6 +36,9 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 app.get('/', (request, response) => {
 	response.render('index.ejs')
 })
+
+//Show user page if the user is logged in
+app.get('/user', requireAuth, (req, res) => res.render('user'))
 
 //Use the routes for the authentication pages
 app.use(authRoutes);
