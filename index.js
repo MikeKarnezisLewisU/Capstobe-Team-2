@@ -6,6 +6,9 @@ const path = require('path');
 var url = require('url');
 const port = process.env.PORT || 8080;
 
+//Import our routes from the routes folder authRoutes
+const authRoutes = require('./routes/authRoutes');
+
 //middleware
 app.use(express.static('public'));
 
@@ -27,9 +30,8 @@ app.get('/', (request, response) => {
 	response.render('index.ejs')
 })
 
-//Show the login page with /login
-
-//Show the signup page with /signup
+//Use the routes for the authentication pages
+app.use(authRoutes);
 
 
 // Custom 404 page.
