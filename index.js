@@ -1,12 +1,26 @@
 //Capstone Project Server Side Code
-const express = require('express')
-const app = express()
+const express = require('express');
+const mongoose = require('mongoose');
+const app = express();
 const path = require('path');
 var url = require('url');
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 8080;
+
+//middleware
+app.use(express.static('public'));
 
 //Set view for ejs
 app.set('view engine', 'ejs')
+
+//Connect to the MongoDB database
+const dbURI = 'mongodb+srv://Jack:12Stone25@cluster0.c8vrqj7.mongodb.net/node-auth?retryWrites=true&w=majority'
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+/*
+
+	.then((result) => app.listen(3000))
+	.catch((err) => console.log(err))
+*/
+
 
 //Show the homepage with just a / route
 app.get('/', (request, response) => {
