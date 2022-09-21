@@ -8,10 +8,15 @@ const port = process.env.PORT || 8080
 //Set view for ejs
 app.set('view engine', 'ejs')
 
-//Show the homepage
+//Show the homepage with just a / route
 app.get('/', (request, response) => {
 	response.render('index.ejs')
 })
+
+//Show the login page with /login
+
+//Show the signup page with /signup
+
 
 // Custom 404 page.
 app.use((request, response) => {
