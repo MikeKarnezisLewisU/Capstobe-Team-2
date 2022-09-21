@@ -52,6 +52,24 @@ userSchema.pre('save', async function(next) {
     next();
 })
 
+//Static method to login the user statics.whateveritscalledmethod
+userSchema.statics.login = async function(email, password) {
+    //this refers to user model use findOne to find a record of it
+    const user = await this.findOne({ email })
+
+    //Check if we have a user
+    if (user) {
+        //Need to compare passwords if it exists (need to compare the hashed password to the hashed version of whats entered for the password; use bcrypt again)
+        const auth = await bcrypt.compare(password, user.password) //bcrypt hashes the first one for us to compare
+        
+        //If this has been a success then return the user to log them in
+        if (auth) {
+            return user
+        }
+        throw Error('incorrect password') //If the above was wrong we got a wrong password
+    }
+    throw Error('incorrect email') //If it doesn't exist throw an error!
+}
 
 //Create a model based on this schema above
 const User = mongoose.model('user', userSchema); //Must be singular of whatever we called our database for this, we called it 'users' (mongoose ploralizes it!)

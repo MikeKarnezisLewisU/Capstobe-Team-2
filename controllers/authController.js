@@ -89,7 +89,13 @@ module.exports.login_post = async (req, res) => {
     //console.log(req.body); //Shows the JSON req data in the console
     const { email, password } = req.body //Grabs the JSON objects one by one putting them into each variable
 
-    console.log(email, password); //Shows the same on console as first one above
-   
-    res.send('user login');
+    //Try to log the user in by using the static login function in the User.js file!
+    try {
+        //Call the login static function and it should return as errors or the user itself
+        const user = await User.login(email, password)
+        res.status(200).json({ user: user._id })
+    }
+    catch (err) {
+        res.status(400).json({})
+    }
 }
