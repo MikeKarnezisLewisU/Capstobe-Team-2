@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 //Use the validator package to validate emails
 const { isEmail } = require('validator') //Just need to pass this into validate now otherwise we'd have to use reqular expressions to check it
 
+//Use the bcryot package to hash passwords before saved to database
+const bcrypt = require('bcrypt')
+
 //Create a schema for what our objects will look in the database
 const userSchema = new mongoose.Schema({
     
@@ -26,21 +29,29 @@ const userSchema = new mongoose.Schema({
 });
 
 //Mongoose hooks pre/post (use the pre hook to hash a password before it's saved in DB)
-//Fire a function after doc saved in DB MONGOOSE HOOKS
+//Fire a function after doc saved in DB MONGOOSE HOOKS EXAMPLE IF TO BE USED LATER
+/**
 userSchema.post('save', function(doc, next) {
     //Sends that the user has been saved to the console after the save event has happened in the database
-    console.log('New user has been saved!')
-    next();
-})
-
-//Fire a function BEFORE doc saved to DB EXAMPLE IF TO BE USED LATER
-/** 
-userSchema.pre('save', function(next) {
-    //this object refers to json to be saved into database
-    console.log('user about to be created and saved', this)
+    //console.log('New user has been saved!')
+    
     next();
 })
 */
+
+//Fire a function BEFORE doc saved to DB
+userSchema.pre('save', async function(next) {
+    //this object refers to json to be saved into database
+    //console.log('user about to be created and saved', this)
+    //Use bcrypt as salt to hash
+    const salt = await bcrypt.genSalt(); //genSalt() generates salt function that's async
+    //hash(password signging up with, the salt)
+    this.password = await bcrypt.hash(this.password, salt) //this refers to instance to user trying to create
+    
+    //Now the password to be saved will be hashed!
+    next();
+})
+
 
 //Create a model based on this schema above
 const User = mongoose.model('user', userSchema); //Must be singular of whatever we called our database for this, we called it 'users' (mongoose ploralizes it!)
