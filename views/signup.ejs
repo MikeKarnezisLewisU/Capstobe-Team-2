@@ -27,11 +27,17 @@
  <!--JavaScript for handeling the sign up process-->
  <script>
     const form = document.querySelector('form');
+    const emailError = document.querySelector('.email.error')
+    const passwordError = document.querySelector('.password.error')
 
     //Listen for when the submit button is pressed then fire function to take in event object
     form.addEventListener('submit', async (e) => {
         e.preventDefault(); //Prevents refresh from happening
     
+        //Reset the errors everytime we submit remember!
+        emailError.textContent = ''
+        passwordError.textContent = ''
+
         //Get the email and password from name field
         const email = form.email.value;
         const password = form.password.value;
@@ -40,14 +46,29 @@
 
         try {
             const res = await fetch('/signup', {
-                method: 'POST', //Type of request
-
-                //What you're passing
-                body: JSON.stringify({ email: email, password: password }),
-            
-                //So it knows json is the type of data being added to the server
-                headers: { 'Content-Type': 'application/json' }
+                    method: 'POST',
+                    //Can pass it as so as it has the same name as the value or use email: email, password: password
+                    body: JSON.stringify({ email, password }),
+                    //Send it as json to the server and DB if succusful
+                    headers: { 'Content-Type': 'application/json' }
             })
+
+            //Get the data from the response
+            const data = await res.json()
+            //Show data in the console (either user id or the errors)
+            console.log(data)
+
+            //Lets do something when there's an error if it exists
+            if (data.errors) {
+                emailError.textContent = data.errors.email
+                passwordError.textContent = data.errors.password
+
+            }
+
+            //If there was no problem signing up, then redirect to the home page
+            if (data.user) {
+                location.assign('/')
+            }
         }
         catch (err) {
             console.log(err)

@@ -37,6 +37,15 @@ const handleErrors = (err) => {
     return errors; //Send the errors object back
 } 
 
+//Function for json web tokens (use id when DB json format is created as each id is unique)
+//Use maxAge for setting the age of a token
+const maxAge = 3 * 24 * 60 * 60 //Value for 3 days in seconds
+const createToken = (id) => {
+    return jwt.sign({ id }, 'net ninja secret', {
+        expiresIn: maxAge
+    }) //Pass the payload and secret into sign SECRET
+}
+
 //Functions to handle the get and post requests from the 'routes' folder
 module.exports.signup_get = (req, res) => {
     res.render('signup');
@@ -58,17 +67,22 @@ module.exports.signup_post = async (req, res) => {
         //Must pass what matches the schema, so the email and password
         const user = await User.create({ email, password }) //Async, gives a promise; make sure the function is async then
 
+        //Create a json web token to have the user be logged in for verification
+        const token = createToken(user._id)
+        //Place inside a cookie and send in res
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+
         //Send response when above is done and it will be sent into our DB
-        res.status(201).json(user) //Send back as json
+        res.status(201).json({ user: user._id }) //Send back as json as response to front end
     }
     catch(err) {
         //console.log(err); //Log the error
         //Use the handleErrors function to get correct error messages ready
         const errors = handleErrors(err)
         //res.status(400).send('error, user not created') //Log the error type in the console
-        res.status(400).json( { errors }) //Will respond with the errors and the error message for each error in json format
+        //This goes to front end
+        res.status(400).json({ errors }) //Will respond with the errors and the error message for each error in json format
     }
-    res.send('new signup');
 }
 
 module.exports.login_post = async (req, res) => {
