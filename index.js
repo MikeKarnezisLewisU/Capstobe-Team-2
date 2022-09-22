@@ -12,8 +12,9 @@ const authRoutes = require('./routes/authRoutes');
 //Import cookie parser package to work with cookies
 const cookieParser = require('cookie-parser')
 
-//Import function to require authentication to go to certain pages
-const { requireAuth } = require('./middleware/authMiddleware')
+//Import function to require authentication to go to certain pages and check if user exists (middleware)
+const { requireAuth, checkUser } = require('./middleware/authMiddleware')
+
 //middleware
 app.use(express.static('public'));
 app.use(express.json()); //Parces JSON into a javascript object to be used inside the code attaching it to the request in the authRoutes file
@@ -31,6 +32,8 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 	.catch((err) => console.log(err))
 */
 
+//Use checkUser to find if we have a user that is already logged in to give information in views
+app.get('*', checkUser) //Apply this to every route
 
 //Show the homepage with just a / route
 app.get('/', (request, response) => {

@@ -51,7 +51,7 @@ const handleErrors = (err) => {
 //Use maxAge for setting the age of a token
 const maxAge = 3 * 24 * 60 * 60 //Value for 3 days in seconds
 const createToken = (id) => {
-    return jwt.sign({ id }, 'net ninja secret', {
+    return jwt.sign({ id }, 'JK13@SKlmnOq0909Wh', {
         expiresIn: maxAge
     }) //Pass the payload and secret into sign SECRET
 }

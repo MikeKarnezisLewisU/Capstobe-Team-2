@@ -12,9 +12,10 @@
     <ul>
       <!--Handled in the controller and routes-->
       <li><a href="/logout">Log Out</a></li>
-      <li><a href="/login">Log In</a></li>
-      <li><a href="/signup">Sign Up</a></li>
       <li><a href="/">Home Page</a></li>
     </ul>
+
+    <!--Greet the current user using embedded JS-->
+    <h2>Welcome, <%= user.email %></h2>
  </body>
 </html>
