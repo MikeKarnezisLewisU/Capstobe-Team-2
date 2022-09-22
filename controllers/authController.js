@@ -116,3 +116,11 @@ module.exports.login_post = async (req, res) => {
         res.status(400).json({ errors })
     }
 }
+
+module.exports.logout_get = (req, res) => {
+    //We now need to delete the JWT cookie by replacing it with a blank cookie with a short expiration date
+    res.cookie('jwt', '', { maxAge: 1 }) //Giving '' removes the token value and it expires in one milisecond
+
+    //Now redirect them to the home page when logged out
+    res.redirect('/')
+}
