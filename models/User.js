@@ -28,9 +28,9 @@ const userSchema = new mongoose.Schema({
     },
 
     //User status to allow certain permissions 
-    status: {
+    userStatus: {
         type: String,
-        default: 'customer',
+        required: [true, 'Could not get status!'],
         lowercase: true
     },
     

@@ -86,6 +86,10 @@
 
                 //Display the worker header to know we're signing up as one
                 document.getElementById('workerHeader').style.display = "block"
+
+            //Show an error to the user
+            } else {
+                workPassError.textContent = "Incorrect Code!"
             }
         //If not then the submit button must've been pressed to attempt to sign up
         } else {
@@ -105,7 +109,7 @@
                 const res = await fetch('/signup', {
                         method: 'POST',
                         //Can pass it as so as it has the same name as the value or use email: email, password: password
-                        body: JSON.stringify({ email, password }),
+                        body: JSON.stringify({ email, password, userStatus }),
                         //Send it as json to the server and DB if succusful
                         headers: { 'Content-Type': 'application/json' }
                 })
