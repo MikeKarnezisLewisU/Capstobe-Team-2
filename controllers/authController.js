@@ -66,6 +66,8 @@ module.exports.login_get = (req, res) => {
 }
 
 module.exports.signup_post = async (req, res) => {
+    //MIGHT NEED TO GET PERMISSION INFORMATION ADDED TO THIS FOR WHEN THE USER SIGNS UP
+    
     //console.log(req.body); //Shows the JSON req data in the console
     const { email, password } = req.body //Grabs the JSON objects one by one putting them into each variable
 
