@@ -22,20 +22,27 @@
         <label for="password">Password</label>
         <input type="password" name="password" required />
         <div class="password error"></div>
+        
+        <!--Button to sign up-->
+        <button>Sign up</button>
+        <!--Button for a worker to click to sign up as a worker-->
+        <!--<button class="worker">I'm a Worker</button>-->
+    </form>
+    <!--Button for a worker to click to sign up as a worker-->
+    <form class="form2">
         <!--Hidden label that will pop up if the user attempts to sign in as a worker-->
         <label id="workPassLabel" for="workPassword" style="display:none">Company Code</label>
         <input type="password" name="workPassword" style="display:none"/>
         <div class="workPassError"></div>
-        <!--Button to sign up-->
-        <button>Sign up</button>
-        <!--Button for a worker to click to sign up as a worker-->
         <button class="worker">I'm a Worker</button>
     </form>
+
  </body>
 
  <!--JavaScript for handeling the sign up process-->
  <script>
     const form = document.querySelector('form');
+    const form2 = document.querySelector('.form2')
     const emailError = document.querySelector('.email.error')
     const passwordError = document.querySelector('.password.error')
     const workPassError = document.querySelector('.workPassError')
@@ -43,21 +50,20 @@
     //Default permissions for user
     let userStatus = "customer"
 
-    //Listen for when the submit button is pressed then fire function to take in event object
-    form.addEventListener('submit', async (e) => {
+    form2.addEventListener('submit', async (e) => {
+        e.preventDefault(); //Prevents refresh from
 
-        e.preventDefault(); //Prevents refresh from happening
-
-        //e.submitter.className will give you the class of the button pushed so you can tell which one is pushed
+        console.log("BUTTON PRESS")
         console.log("Hello there jack: ", e.submitter.className);
 
+        //Attempt to fix
         //If the worker button was pressed then we should give the user a chance to prove that they're a worker
         if (e.submitter.className == "worker") {
             console.log("Worker button pressed")
 
             //Display the form and the label for the company password check
             document.getElementById('workPassLabel').style.display = "block"
-            form.workPassword.style.display = "block"
+            form2.workPassword.style.display = "block"
 
             //Have the text in the worker button now change 
             e.submitter.textContent = "Submit Code"
@@ -69,7 +75,7 @@
             workPassError.textContent = '' //Resets the errors for work password
 
             //Get the password entered by the user
-            const workPass = form.workPassword.value
+            const workPass = form2.workPassword.value
 
             //If the workpassword is equal to the right code then give them worker permissions when sigining in
             //INITIAL WORK PASSWORD IS HERE!!
@@ -81,7 +87,7 @@
                 //Hide the company password label and form and button and notify the user they entered the correct code
                 document.getElementById('workPassLabel').style.display = "none"
                 e.submitter.style.display = "none"
-                form.workPassword.style.display = "none"
+                form2.workPassword.style.display = "none"
 
 
                 //Display the worker header to know we're signing up as one
@@ -91,8 +97,21 @@
             } else {
                 workPassError.textContent = "Incorrect Code!"
             }
-        //If not then the submit button must've been pressed to attempt to sign up
         } else {
+            console.log("ERROR!")
+        }
+
+    })
+
+    //Listen for when the submit button is pressed then fire function to take in event object
+    form.addEventListener('submit', async (e) => {
+
+        e.preventDefault(); //Prevents refresh from happening
+
+        //e.submitter.className will give you the class of the button pushed so you can tell which one is pushed
+        console.log("Hello there jack: ", e.submitter.className);
+
+       
             //Reset the errors everytime we submit remember!
             emailError.textContent = ''
             passwordError.textContent = ''
@@ -137,6 +156,6 @@
         }
     
        
-    })
+    )
  </script>
 </html>
