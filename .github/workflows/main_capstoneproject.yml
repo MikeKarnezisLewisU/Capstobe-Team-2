@@ -56,4 +56,4 @@ jobs:
           app-name: 'CapstoneProject'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F98DACDB84C34FBF89E01AAB0B05707F }}
-          package: '${{ github.workspace}}/target/*jar'
+          package: .
