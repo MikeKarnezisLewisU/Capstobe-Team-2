@@ -3,6 +3,9 @@
 
 name: Build and deploy Node.js app to Azure Web App - CapstoneProject
 
+env:
+    APP_CONFIGURATION_CONNECTION_STRING: ${{ secrets.APP_CONFIGURATION_CONNECTION_STRING }}
+
 on:
   push:
     branches:
@@ -53,4 +56,4 @@ jobs:
           app-name: 'CapstoneProject'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F98DACDB84C34FBF89E01AAB0B05707F }}
-          package: .
+          package: '${{ github.workspace}}/target/*jar'
